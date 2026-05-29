@@ -16,7 +16,7 @@ router.post('/join', async (req, res, next) => {
     // Check if already in waitlist
     const existing = await Waitlist.findOne({ email: cleanEmail });
     if (existing) {
-      return res.status(200).json({ message: 'You are already on the waitlist! 🎉', alreadyExists: true });
+      return res.status(200).json({ message: 'You are already on the waitlist!', alreadyExists: true });
     }
     
     const newEntry = new Waitlist({ email: cleanEmail });
@@ -25,7 +25,7 @@ router.post('/join', async (req, res, next) => {
     res.status(201).json({ message: 'Successfully joined the waitlist! 🚀' });
   } catch (error: any) {
     if (error.code === 11000) {
-      return res.status(200).json({ message: 'You are already on the waitlist! 🎉', alreadyExists: true });
+      return res.status(200).json({ message: 'You are already on the waitlist!', alreadyExists: true });
     }
     next(error);
   }
