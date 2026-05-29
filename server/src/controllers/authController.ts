@@ -363,7 +363,7 @@ export const dailyCheckIn = async (req: AuthRequest, res: Response) => {
         await transaction.save();
 
         res.json({
-            message: 'Successfully claimed 50 daily reX Points! 🚀',
+            message: 'Successfully claimed 50 daily reX Points!',
             points: user.points,
             lastCheckIn: user.lastCheckIn
         });

@@ -11,7 +11,7 @@ mongoose.connect(CONFIG.MONGODB_URI!)
         
         // Start server after DB connection
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`Server running on port ${PORT}`);
             console.log(`Environment: ${CONFIG.NODE_ENV}`);
         });
     })

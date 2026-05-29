@@ -22,7 +22,7 @@ router.post('/join', async (req, res, next) => {
     const newEntry = new Waitlist({ email: cleanEmail });
     await newEntry.save();
     
-    res.status(201).json({ message: 'Successfully joined the waitlist! 🚀' });
+    res.status(201).json({ message: 'Successfully joined the waitlist!' });
   } catch (error: any) {
     if (error.code === 11000) {
       return res.status(200).json({ message: 'You are already on the waitlist!', alreadyExists: true });

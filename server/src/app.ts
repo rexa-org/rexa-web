@@ -68,7 +68,7 @@ app.use(express.json());
 // Root route
 app.get('/', (req, res) => {
     res.json({
-        message: 'Welcome to reX API 🚀',
+        message: 'Welcome to reX API',
         status: 'active',
         version: CONFIG.API_VERSION,
         environment: CONFIG.NODE_ENV
