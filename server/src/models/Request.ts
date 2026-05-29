@@ -4,7 +4,9 @@ export interface IRequest extends Document {
   reward: mongoose.Types.ObjectId;
   sender: mongoose.Types.ObjectId;
   receiver: mongoose.Types.ObjectId;
-  status: 'pending' | 'accepted' | 'rejected';
+  offeredReward?: mongoose.Types.ObjectId;
+  offeredPoints?: number;
+  status: 'pending' | 'accepted' | 'rejected' | 'cancelled';
   message?: string;
   createdAt: Date;
 }
@@ -25,9 +27,17 @@ const RequestSchema = new Schema({
     ref: 'User',
     required: true
   },
+  offeredReward: {
+    type: Schema.Types.ObjectId,
+    ref: 'Reward'
+  },
+  offeredPoints: {
+    type: Number,
+    default: 0
+  },
   status: {
     type: String,
-    enum: ['pending', 'accepted', 'rejected'],
+    enum: ['pending', 'accepted', 'rejected', 'cancelled'],
     default: 'pending'
   },
   message: {

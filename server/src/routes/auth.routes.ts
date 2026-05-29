@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, getProfile, updateProfile, verifyOtp, resendOtp } from '../controllers/authController';
+import { register, login, getProfile, updateProfile, verifyOtp, resendOtp, dailyCheckIn } from '../controllers/authController';
 import { auth } from '../middleware/auth';
 
 const router = express.Router();
@@ -18,5 +18,6 @@ router.post('/resend-otp', resendOtp);
 // Protected routes
 router.get('/profile', auth, getProfile);
 router.put('/profile', auth, updateProfile);
+router.post('/checkin', auth, dailyCheckIn);
 
 export default router; 

@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model';
 import { Otp } from '../models/otp.model';
+import { Transaction } from '../models/transaction.model';
 import { JWT_CONFIG } from '../config/jwt.config';
 import { AuthRequest } from '../middleware/auth';
 import { CONFIG } from '../config/config';
@@ -320,5 +321,55 @@ export const resendOtp = async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Resend OTP error:', error);
         res.status(500).json({ message: 'Server error during OTP resend' });
+    }
+};
+
+export const dailyCheckIn = async (req: AuthRequest, res: Response) => {
+    try {
+        const userId = req.user?.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'User not authenticated' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const now = new Date();
+        if (user.lastCheckIn) {
+            const timeDiff = now.getTime() - new Date(user.lastCheckIn).getTime();
+            const cooldown = 24 * 60 * 60 * 1000; // 24 hours in ms
+            if (timeDiff < cooldown) {
+                const remainingMs = cooldown - timeDiff;
+                const remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
+                const remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
+                return res.status(400).json({
+                    message: `Daily check-in already claimed. Please try again in ${remainingHours}h ${remainingMinutes}m.`
+                });
+            }
+        }
+
+        user.points = (user.points || 0) + 50;
+        user.lifetimeEarned = (user.lifetimeEarned || 0) + 50;
+        user.lastCheckIn = now;
+        await user.save();
+
+        const transaction = new Transaction({
+            toUser: user._id,
+            points: 50,
+            type: 'checkin'
+        });
+        await transaction.save();
+
+        res.json({
+            message: 'Successfully claimed 50 daily reX Points! 🚀',
+            points: user.points,
+            lastCheckIn: user.lastCheckIn
+        });
+
+    } catch (error: any) {
+        console.error('Daily check-in error:', error);
+        res.status(500).json({ message: error.message || 'Server error during daily check-in' });
     }
 };

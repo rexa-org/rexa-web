@@ -11,6 +11,9 @@ import { useAuth } from '../context/AuthContext';
 import Documentation from '../pages/Documentation';
 import { TransactionHistory } from '../pages/TransactionHistory';
 import { ProtectedRoute } from '../components/ProtectedRoute';
+import { Wallet } from '../pages/Wallet';
+import { ExchangeRequests } from '../pages/ExchangeRequests';
+import { AdminDashboard } from '../pages/AdminDashboard';
 
 export const AppRoutes = () => {
     const { isAuthenticated } = useAuth();
@@ -28,6 +31,30 @@ export const AppRoutes = () => {
                 element={
                     <ProtectedRoute>
                         <Profile />
+                    </ProtectedRoute>
+                } 
+            />
+            <Route 
+                path="/wallet" 
+                element={
+                    <ProtectedRoute>
+                        <Wallet />
+                    </ProtectedRoute>
+                } 
+            />
+            <Route 
+                path="/exchange-requests" 
+                element={
+                    <ProtectedRoute>
+                        <ExchangeRequests />
+                    </ProtectedRoute>
+                } 
+            />
+            <Route 
+                path="/admin" 
+                element={
+                    <ProtectedRoute>
+                        <AdminDashboard />
                     </ProtectedRoute>
                 } 
             />

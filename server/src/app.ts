@@ -8,8 +8,9 @@ import { CONFIG } from './config/config';
 import authRoutes from './routes/auth.routes';
 import rewardRoutes from './routes/rewardRoutes';
 import categoryRoutes from './routes/category.routes';
-import requestRoutes from './routes/request.routes';
+import requestRoutes from './routes/requestRoutes';
 import transactionRoutes from './routes/transaction.routes';
+import adminRoutes from './routes/admin.routes';
 
 const app = express();
 
@@ -87,6 +88,7 @@ app.use('/api/rewards', rewardRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/requests', requestRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Error handling middleware - place after routes
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

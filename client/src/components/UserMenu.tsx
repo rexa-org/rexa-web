@@ -44,7 +44,7 @@ export const UserMenu = () => {
         <Menu as="div" className="relative">
             <Menu.Button className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
                 <span className="text-slate-700 dark:text-slate-200">{user?.name}</span>
-                <div className={`${isAuthenticated ? "block" : "hidden"}"flex items-center gap-1 text-sm text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/50 px-3 py-1.5 rounded-full"`}>
+                <div className={`${isAuthenticated ? "flex" : "hidden"} items-center gap-1 text-sm text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/50 px-3 py-1.5 rounded-full`}>
                     <span>{user && user?.points  || profile?.points } pts</span>
                 </div>
             </Menu.Button>
