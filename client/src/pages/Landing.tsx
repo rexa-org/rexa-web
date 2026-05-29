@@ -219,16 +219,10 @@ export const Landing = () => {
           <li><a href="#how">How it works</a></li>
           <li><a href="#marketplace">Marketplace</a></li>
           <li><a href="#vision">Vision</a></li>
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <li>
               <Link to="/marketplace" className="nav-cta">
                 Go to Marketplace
-              </Link>
-            </li>
-          ) : (
-            <li>
-              <Link to="/signin" className="nav-cta">
-                Launch App
               </Link>
             </li>
           )}
@@ -287,14 +281,9 @@ export const Landing = () => {
               Join Waitlist
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5"/></svg>
             </a>
-            {isAuthenticated ? (
+            {isAuthenticated && (
               <Link to="/marketplace" className="btn-secondary">
                 Go to Dashboard
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5"/></svg>
-              </Link>
-            ) : (
-              <Link to="/signin" className="btn-secondary">
-                See Launch Marketplace
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5"/></svg>
               </Link>
             )}
