@@ -4,7 +4,7 @@ import { CONFIG } from '../config/config';
 
 const addPointsToExistingUsers = async () => {
     try {
-        await mongoose.connect(CONFIG.MONGODB_URI);
+        await mongoose.connect(CONFIG.MONGODB_URI!);
         console.log('Connected to MongoDB Atlas');
 
         const result = await User.updateMany(

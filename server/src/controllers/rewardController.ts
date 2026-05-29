@@ -6,14 +6,43 @@ import{ Transaction } from '../models/transaction.model';
 
 export const getAllRewards = async (req: Request, res: Response) => {
     try {
-        const rewards = await Reward.find()
-            .populate('owner', 'name email')
-            .populate('category', 'name slug icon')
-            .exec();
+        const { search, category, minPoints, maxPoints, sort } = req.query;
+        const query: any = {};
 
-        if (!rewards) {
-            return res.status(404).json({ message: 'No rewards found' });
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ];
         }
+
+        if (category) {
+            query.category = category;
+        }
+
+        if (minPoints !== undefined || maxPoints !== undefined) {
+            query.points = {};
+            if (minPoints !== undefined) query.points.$gte = Number(minPoints);
+            if (maxPoints !== undefined) query.points.$lte = Number(maxPoints);
+        }
+
+        let sortCriteria: any = { createdAt: -1 }; // default: recent
+        if (sort === 'points_asc') {
+            sortCriteria = { points: 1 };
+        } else if (sort === 'points_desc') {
+            sortCriteria = { points: -1 };
+        } else if (sort === 'recent') {
+            sortCriteria = { createdAt: -1 };
+        }
+
+        // We fetch rewards but exclude 'code' from listing for security.
+        // Users should only see the code once they redeem the reward or if they own it.
+        const rewards = await Reward.find(query)
+            .select('-code')
+            .populate('owner', 'name email trustScore role')
+            .populate('category', 'name slug icon')
+            .sort(sortCriteria)
+            .exec();
 
         res.json(rewards);
     } catch (error: any) {
@@ -79,7 +108,8 @@ export const getMyRewards = async (req: AuthRequest, res: Response) => {
 export const getAllAvailableRewards = async (req: Request, res: Response) => {
     try {
         const rewards = await Reward.find({ status: 'available' })
-            .populate('owner', 'name email')
+            .select('-code')
+            .populate('owner', 'name email trustScore role')
             .populate('category', 'name slug icon')
             .exec();
 
@@ -189,15 +219,35 @@ export const createReward = async (req: AuthRequest, res: Response) => {
 
 export const getRewardById = async (req: AuthRequest, res: Response) => {
   try {
+    const userId = req.user?.userId;
     const reward = await Reward.findById(req.params.id)
-      .populate('owner', 'name email');
+      .populate('owner', 'name email trustScore role');
     
     if (!reward) {
       return res.status(404).json({ message: 'Reward not found' });
     }
+
+    const rewardObj = reward.toObject();
     
-    res.json(reward);
+    // Secure code field: Only return code if the user is owner or redeemer or admin!
+    const isOwner = rewardObj.owner._id.toString() === userId;
+    const isRedeemer = rewardObj.redeemedBy?.toString() === userId;
+    
+    let isAdmin = false;
+    if (userId) {
+      const user = await User.findById(userId);
+      if (user && user.role === 'admin') {
+        isAdmin = true;
+      }
+    }
+    
+    if (!isOwner && !isRedeemer && !isAdmin) {
+      delete (rewardObj as any).code;
+    }
+    
+    res.json(rewardObj);
   } catch (error) {
+    console.error('Error fetching reward details:', error);
     res.status(500).json({ message: 'Error fetching reward' });
   }
 };

@@ -11,6 +11,20 @@ export const api = axios.create({
     }
 });
 
+// Request interceptor to add Authorization token dynamically
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 // Auth API endpoints
 export const authApi = {
     signin: (credentials: { email: string; password: string }) => 
@@ -21,12 +35,13 @@ export const authApi = {
         api.post('/auth/verify-otp', data),
     resendOtp: (email: string) => api.post('/auth/resend-otp', { email }),
     getProfile: () => api.get('/auth/profile'),
-    updateProfile: (data: any) => api.put('/auth/profile', data)
+    updateProfile: (data: any) => api.put('/auth/profile', data),
+    checkin: () => api.post('/auth/checkin')
 };
 
 // Reward API endpoints
 export const rewardApi = {
-    getAll: () => api.get('/rewards'),
+    getAll: (params?: any) => api.get('/rewards', { params }),
     getById: (id: string) => api.get(`/rewards/${id}`),
     create: (data: any) => api.post('/rewards', data),
     update: (id: string, data: any) => api.put(`/rewards/${id}`, data),
@@ -57,8 +72,18 @@ export const categoryApi = {
 
 // Request API endpoints
 export const requestApi = {
-    create: (rewardId: string) => api.post(`/requests/${rewardId}`),
+    create: (rewardId: string, data?: { offeredRewardId?: string; offeredPoints?: number; message?: string }) => 
+        api.post(`/requests/${rewardId}`, data),
     getMyRequests: () => api.get('/requests/my-requests'),
     getById: (id: string) => api.get(`/requests/${id}`),
-    respond: (id: string, response: any) => api.patch(`/requests/${id}/respond`, response)
+    respond: (id: string, response: string) => api.patch(`/requests/${id}/respond`, { response })
+};
+
+// Admin API endpoints
+export const adminApi = {
+    getUsers: () => api.get('/admin/users'),
+    getRewards: () => api.get('/admin/rewards'),
+    getTransactions: () => api.get('/admin/transactions'),
+    adjustPoints: (userId: string, points: number) => api.post(`/admin/users/${userId}/points`, { points }),
+    deleteReward: (rewardId: string) => api.delete(`/admin/rewards/${rewardId}`)
 };

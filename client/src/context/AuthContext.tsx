@@ -1,12 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api, authApi } from '../services/api';
-import { toast } from 'react-hot-toast';
 
-interface User {
+export interface User {
     _id: string;
     name: string;
     email: string;
     points: number;
+    role: 'user' | 'admin';
+    trustScore: number;
+    ratingsCount: number;
+    ratingsSum: number;
+    lifetimeEarned: number;
+    lifetimeSpent: number;
+    lastCheckIn?: string;
 }
 
 interface AuthContextType {
@@ -15,23 +21,19 @@ interface AuthContextType {
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
+    updatePoints: (points: number) => void;
+    fetchProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(() => {
-        // Initialize user state from localStorage if available
-        const token = localStorage.getItem('token');
-        return token ? null : null; // Will be populated by fetchProfile if token exists
-    });
+    const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        // Initialize auth state from localStorage
         return !!localStorage.getItem('token');
     });
     const [isLoading, setIsLoading] = useState(true);
 
-    // Function to set auth token in axios headers
     const setAuthToken = (token: string | null) => {
         if (token) {
             localStorage.setItem('token', token);
@@ -77,7 +79,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    // Check for token and fetch profile on mount
+    const updatePoints = (points: number) => {
+        setUser(prev => prev ? { ...prev, points } : null);
+    };
+
     useEffect(() => {
         fetchProfile();
     }, []);
@@ -87,7 +92,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isAuthenticated,
         isLoading,
         login,
-        logout
+        logout,
+        updatePoints,
+        fetchProfile
     };
 
     return (

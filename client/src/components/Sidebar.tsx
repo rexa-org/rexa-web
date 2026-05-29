@@ -1,51 +1,83 @@
-import { FiHome, FiGift, FiUser, FiLogOut, FiList } from 'react-icons/fi';
+import { FiHome, FiGift, FiUser, FiLogOut, FiList, FiCreditCard, FiRefreshCw, FiSliders } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export const Sidebar = () => {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, user } = useAuth();
+    const isAdmin = user?.role === 'admin';
  
-
-    
     return (
         <aside className={`fixed ${isAuthenticated ? `block left-0 top-16 h-[calc(100vh-4rem)] w-14 sm:w-16 lg:w-20 
             flex flex-col items-center py-6 sm:py-8 
             bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
             shadow-lg z-40` : 'hidden -ml-96'} `}>
 
-            
             {isAuthenticated && (
                 <>
-                            <NavLink to="/" 
-                className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
-                    hover:scale-110 active:scale-95
-                    ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
-                    'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}>
-                <FiHome className="w-5 h-5 sm:w-6 sm:h-6" />
-            </NavLink>
+                    <NavLink to="/" 
+                        className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
+                            hover:scale-110 active:scale-95
+                            ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
+                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                        title="Home">
+                        <FiHome className="w-5 h-5 sm:w-6 sm:h-6" />
+                    </NavLink>
+
                     <NavLink to="/my-rewards"
                         className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
                             hover:scale-110 active:scale-95
                             ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
-                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}>
+                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                        title="My Rewards">
                         <FiGift className="w-5 h-5 sm:w-6 sm:h-6" />
                     </NavLink>
                     
-                    <NavLink to="/profile"
+                    <NavLink to="/wallet"
                         className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
                             hover:scale-110 active:scale-95
                             ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
-                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}>
-                        <FiUser className="w-5 h-5 sm:w-6 sm:h-6" />
+                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                        title="Wallet & Check-in">
+                        <FiCreditCard className="w-5 h-5 sm:w-6 sm:h-6" />
+                    </NavLink>
+
+                    <NavLink to="/exchange-requests"
+                        className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
+                            hover:scale-110 active:scale-95
+                            ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
+                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                        title="Exchange Swaps">
+                        <FiRefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />
                     </NavLink>
 
                     <NavLink to="/transactions"
                         className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
                             hover:scale-110 active:scale-95
                             ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
-                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}>
+                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                        title="Transaction Ledger">
                         <FiList className="w-5 h-5 sm:w-6 sm:h-6" />
                     </NavLink>
+                    
+                    <NavLink to="/profile"
+                        className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
+                            hover:scale-110 active:scale-95
+                            ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
+                            'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                        title="My Profile">
+                        <FiUser className="w-5 h-5 sm:w-6 sm:h-6" />
+                    </NavLink>
+
+                    {isAdmin && (
+                        <NavLink to="/admin"
+                            className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
+                                hover:scale-110 active:scale-95
+                                ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
+                                'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
+                            title="Admin Dashboard">
+                            <FiSliders className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </NavLink>
+                    )}
 
                     <button
                         onClick={logout}
@@ -74,4 +106,4 @@ export const Sidebar = () => {
             )}
         </aside>
     );
-}; 
+};

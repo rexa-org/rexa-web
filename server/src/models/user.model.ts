@@ -9,6 +9,13 @@ export interface IUser extends Document {
     points: number;
     redeemedRewards: number;
     isVerified: boolean;
+    role: 'user' | 'admin';
+    trustScore: number;
+    ratingsCount: number;
+    ratingsSum: number;
+    lifetimeEarned: number;
+    lifetimeSpent: number;
+    lastCheckIn?: Date;
     createdAt: Date;
     updatedAt: Date;
     comparePassword(candidatePassword: string): Promise<boolean>;
@@ -46,6 +53,36 @@ const userSchema = new Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    trustScore: {
+        type: Number,
+        default: 100,
+        min: 0,
+        max: 100
+    },
+    ratingsCount: {
+        type: Number,
+        default: 0
+    },
+    ratingsSum: {
+        type: Number,
+        default: 0
+    },
+    lifetimeEarned: {
+        type: Number,
+        default: 100
+    },
+    lifetimeSpent: {
+        type: Number,
+        default: 0
+    },
+    lastCheckIn: {
+        type: Date
     }
 }, {
     timestamps: true
