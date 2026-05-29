@@ -277,7 +277,6 @@ export const Landing = () => {
         </div>
 
         <div className="hero-content">
-          <div className="hero-badge">Early Access — Beta App Live</div>
           <h1 className="hero-headline">
             Stop letting rewards<br />
             <span className="line2">expire.</span>
