@@ -1,4 +1,4 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AppRoutes } from './routes';
@@ -7,6 +7,16 @@ import { Sidebar } from './components/Sidebar';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (location.pathname === '/') {
+    return (
+      <>
+        <Toaster position="top-right" />
+        <AppRoutes />
+      </>
+    );
+  }
 
   return (
     <>
