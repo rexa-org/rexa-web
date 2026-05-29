@@ -87,3 +87,7 @@ export const adminApi = {
     adjustPoints: (userId: string, points: number) => api.post(`/admin/users/${userId}/points`, { points }),
     deleteReward: (rewardId: string) => api.delete(`/admin/rewards/${rewardId}`)
 };
+
+export const waitlistApi = {
+    join: (email: string) => api.post('/waitlist/join', { email })
+};

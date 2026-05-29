@@ -14,12 +14,12 @@ export const Sidebar = () => {
 
             {isAuthenticated && (
                 <>
-                    <NavLink to="/" 
+                    <NavLink to="/marketplace" 
                         className={({ isActive }) => `p-2 sm:p-3 lg:p-4 rounded-xl mb-3 sm:mb-4 transition-all duration-200
                             hover:scale-110 active:scale-95
                             ${isActive ? 'text-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 shadow-lg' : 
                             'text-gray-500 hover:text-cyan-500 dark:text-gray-400 dark:hover:text-cyan-400'}`}
-                        title="Home">
+                        title="Marketplace">
                         <FiHome className="w-5 h-5 sm:w-6 sm:h-6" />
                     </NavLink>
 

@@ -23,7 +23,7 @@ export const SignIn = () => {
             !redirectTo.includes('redirect=')) {
             navigate(redirectTo);
         } else {
-            navigate('/');
+            navigate('/marketplace');
         }
         toast.success('Welcome back to reXa! 🎉');
     };

@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Home } from '../pages/Home';
+import { Landing } from '../pages/Landing';
 import { SignIn } from '../pages/SignIn';
 import { Register } from '../pages/Register';
 import { Profile } from '../pages/Profile';
@@ -21,7 +22,8 @@ export const AppRoutes = () => {
     return (
         <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/marketplace" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/register" element={<Register />} />
             <Route path="/documentation" element={<Documentation />} />

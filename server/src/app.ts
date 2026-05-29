@@ -11,6 +11,7 @@ import categoryRoutes from './routes/category.routes';
 import requestRoutes from './routes/requestRoutes';
 import transactionRoutes from './routes/transaction.routes';
 import adminRoutes from './routes/admin.routes';
+import waitlistRoutes from './routes/waitlist.routes';
 
 const app = express();
 
@@ -89,6 +90,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/waitlist', waitlistRoutes);
 
 // Error handling middleware - place after routes
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

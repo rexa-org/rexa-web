@@ -75,7 +75,7 @@ export const RewardDetails = () => {
     try {
       await rewardApi.delete(id!);
       toast.success('Reward deleted successfully');
-      navigate('/');
+      navigate('/marketplace');
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to delete reward');
     }
@@ -143,7 +143,7 @@ export const RewardDetails = () => {
         <FiAlertCircle className="w-12 h-12 text-red-500 mb-3 animate-pulse" />
         <h3 className="text-lg font-black text-slate-800 dark:text-white">Listing Error</h3>
         <p className="text-sm text-slate-500 mt-1 max-w-sm text-center">{error}</p>
-        <button onClick={() => navigate('/')} className="mt-4 px-4 py-2 bg-slate-200 dark:bg-slate-800 text-xs font-bold rounded-xl transition">
+        <button onClick={() => navigate('/marketplace')} className="mt-4 px-4 py-2 bg-slate-200 dark:bg-slate-800 text-xs font-bold rounded-xl transition">
           Back to Marketplace
         </button>
       </div>
@@ -180,7 +180,7 @@ export const RewardDetails = () => {
         
         {/* Back Link */}
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/marketplace')}
           className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-cyan-500 dark:text-slate-400 dark:hover:text-cyan-400 mb-6 transition"
         >
           <FiChevronLeft className="w-4 h-4" />

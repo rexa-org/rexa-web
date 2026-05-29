@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export const Logo = () => {
+    const { isAuthenticated } = useAuth();
+    
     return (
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={isAuthenticated ? "/marketplace" : "/"} className="flex items-center gap-2">
             <svg 
                 className="w-8 h-8" 
                 viewBox="0 0 24 24" 
