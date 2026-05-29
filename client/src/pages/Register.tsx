@@ -20,26 +20,7 @@ export const Register = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-        if (!formData.name.trim() || !formData.email.trim() || !formData.password.trim()) {
-            toast.error('Please fill in all fields');
-            return;
-        }
-
-        setLoading(true);
-        try {
-            const response = await authApi.register(formData);
-            setUserId(response.data.userId);
-            setIsOtpStep(true);
-            setTimeLeft(600); // 10 minutes expiry
-            toast.success('Registration details saved! Check your email for OTP. ✉️');
-        } catch (error: any) {
-            toast.error(
-                error.response?.data?.message || 'Registration failed. Please check details.'
-            );
-        } finally {
-            setLoading(false);
-        }
+        toast.error('Registration is closed during the private beta. Please join the waitlist on the home page! 🎉');
     };
 
     const handleOtpSubmit = async (e: React.FormEvent) => {

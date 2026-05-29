@@ -36,6 +36,13 @@ export const SignIn = () => {
             return;
         }
 
+        // Restrict sign-in to demo accounts only during private beta
+        const isDemo = email.trim().toLowerCase() === 'admin@rexa.com' || email.trim().toLowerCase() === 'jane@rexa.com';
+        if (!isDemo) {
+            toast.error('Public sign-ins are closed during the private beta. Please join the waitlist!');
+            return;
+        }
+
         setIsLoading(true);
         try {
             await login(email, password);
